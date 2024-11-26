@@ -7,7 +7,7 @@
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
             :class="{ 'border-red-500': v$.value.$error }" id="array" type="text"
             placeholder="2, 4, 0, 100, 4, 11, 2602, 36" v-model="state.value">
-          <p class="text-red-500 text-xs italic" v-if="v$.value.$error">{{ v$.value.$errors[0].$message }}</p>
+          <p class="text-red-500 text-xs italic" v-for="error of v$.value.$errors" :key="error.$uid">{{ error.$message}}</p>
         </div>
         <div class="flex items-center justify-center">
           <button
@@ -23,18 +23,22 @@
 
 <script>
 import useValidate from '@vuelidate/core'
-import { required } from '@vuelidate/validators'
+import { required, integerArrayRequired } from '@/utils/i18n-validators'
 import { computed, reactive } from 'vue';
 
 export default {
   setup() {
+
     const state = reactive({
       value: '',
     })
 
     const rules = computed(() => {
       return {
-        value: { required },
+        value: { 
+          required,
+          integerArrayRequired 
+        },
       }
     })
 
@@ -56,7 +60,10 @@ export default {
       this.v$.$validate()
 
       if (!this.v$.$error) {
-        const array = value.split(',')
+        // eslint-disable-next-line
+        const array = value.replace(/[\[\]']+/g,"").split(',')
+
+        console.log(array)
 
         const evenNums = array.filter(isEven)
         const oddNums = array.filter(isOdd)

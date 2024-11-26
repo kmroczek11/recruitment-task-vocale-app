@@ -1,0 +1,6 @@
+{
+    "validations": {
+        "required": "Value is required",
+        "integerArrayRequired": "Array must contain only integers"
+    }
+}

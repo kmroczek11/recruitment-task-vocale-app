@@ -1,0 +1,6 @@
+{
+    "validations": {
+        "required": "Wartość jest wymagana",
+        "integerArrayRequired": "Tablica musi zawierać liczby całkowite"
+    }
+}
